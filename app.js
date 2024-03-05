@@ -1,0 +1,22 @@
+const express=require("express")
+const mongoose=require("mongoose")
+const dotenv=require("dotenv")
+const categorieRouter=require("./routes/categorie.route")
+const articleRouter=require("./routes/article.route")
+dotenv.config()
+const app=express()
+app.use(express.json())
+app.get("/",(req,res)=>{
+    res.send("bienvenu dans notre site")
+})
+mongoose.connect(process.env.DATABASECLOUD)
+.then(()=>console.log("connexion à la base de données réussie"))
+.catch(err=>{console.log("erreur de connexio à la base de données",err)
+process.exit()
+})
+app.use("/api/categories",categorieRouter)
+app.use("/api/articles",articleRouter)
+app.listen(process.env.PORT,()=>{
+    console.log(`server is listen on port ${process.env.port}`)
+})
+module.exports = app;
